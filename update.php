@@ -8,7 +8,24 @@
  *        
  */
 
-class update{
+class Update{
+
+	public function updateSingle($fromtable, $wherecolumn, $columnvalue, $updatecolumn, $updatevalue) {
+		$db = new Database(); // $db is an object for Database class
+		$con = $db->connection();  // Creating connection $con using $db object
+		try {
+			$sql = "UPDATE ".$fromtable." SET ".$updatecolumn." = ".$updatevalue." WHERE ".$wherecolumn." = ?"; // Using prepated statements for where column value
+			//echo $sql;
+			$stmt = $con->prepare($sql);
+			$stmt->bindParam('1', $columnvalue, PDO::PARAM_INT); // Binding ? value with the sql statement
+			$output = $stmt->execute();
+			return $output;
+		}
+		catch(Exception $e) {
+			return $e;
+		}
+	}
+
 	public function updateAll($fromtable, $wherecolumn, $columnvalue,$valueArray) {
 
 		$db = new Database(); // $db is an object for Database class
